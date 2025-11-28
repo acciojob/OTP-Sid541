@@ -1,34 +1,25 @@
-//your JS code here. If required.
-let inputs = document.querySelectorAll(".code");
+const inputs = document.querySelectorAll(".code");
 
+// Auto-focus first field
 inputs[0].focus();
 
-inputs.forEach((input, idx)=>{
+inputs.forEach((input, index) => {
+    
+    input.addEventListener("input", () => {
+        input.value = input.value.replace(/[^0-9]/g, ""); // Only digits
 
-    input.addEventListener("input",(e)=>{
-        const value = e.target.value;
-
-        if(!/^[0-9]$/.test(value)){
-            e.target.value=""
-            return
+        if (input.value.length === 1 && index < inputs.length - 1) {
+            inputs[index + 1].focus();  // Move forward
         }
-        if(value && idx < inputs.length-1){
-            inputs[idx+1].focus();
-        }
-    })
+    });
 
-    input.addEventListener("keydown",(e)=>{
-        if(e.key ==="Backspace"){
-            if(input.value === ""){
-              if(idx>0){
-                inputs[idx-1].focus();
-                inputs[idx-1].value=""
-              }
+    input.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace") {
+            if (input.value === "" && index > 0) {
+                inputs[index - 1].focus();  // Move backward
+                inputs[index - 1].value = ""; 
             }
-            else{
-                input.value=""
-            }
-            
         }
-    })
-})
+    });
+
+});
